@@ -9,6 +9,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.Priority
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -37,8 +38,10 @@ class DefaultLocationClient(
 
             val request = LocationRequest.create()
                 .setInterval(interval)
-                .setFastestInterval(interval)
-
+                .setFastestInterval(interval).apply {
+                    priority = Priority.PRIORITY_HIGH_ACCURACY
+                }
+            
             val locationCallback = object : LocationCallback() {
                 override fun onLocationResult(locationResult: LocationResult) {
                     super.onLocationResult(locationResult)
